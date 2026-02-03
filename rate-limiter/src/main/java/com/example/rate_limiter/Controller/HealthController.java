@@ -35,14 +35,14 @@ public class HealthController {
 
     @GetMapping("/status")
     public String status(HttpServletRequest request) {
-        return "in status";
-        // String ip = getClientIp(request);
-        // return rateLimitService.currStatus(ip);
+        // return "in status";
+        String ip = getClientIp(request);
+        return rateLimitService.currStatus(ip);
     }
 
-    @GetMapping("/fucked")
-    public String fucked(){
-        return "fucked beyond repair";
+    @GetMapping("/test")
+    public String test(){
+        return "testing ";
     }
 
 
