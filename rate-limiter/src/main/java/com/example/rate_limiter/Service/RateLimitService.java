@@ -27,16 +27,7 @@ public class RateLimitService {
     }
     
 
-    public boolean isAllowed(String userIp) {
-        String key = getKey(userIp);
-        Long count = redisTemplate.opsForValue().increment(key);
-
-        if (count == 1) {
-            redisTemplate.expire(key, 1, TimeUnit.MINUTES);
-        }
-
-        return count <= 15;
-    }
+    
 
     public String currStatus(String userIp){
         String key = getKey(userIp);
