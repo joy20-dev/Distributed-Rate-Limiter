@@ -1,42 +1,36 @@
 package com.example.rate_limiter.Service;
 
-
-import java.sql.Time;
-import java.util.concurrent.TimeUnit;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import com.example.rate_limiter.strategy.RateLimitStrategy;
 import org.springframework.stereotype.Service;
-
-import org.springframework.data.redis.core.RedisTemplate;
 
 @Service
 public class RateLimitService {
-    private final RedisTemplate<String,String> redisTemplate;
+    private final RateLimitStrategy strategy;
+    private static final int MAX_REQUESTS = 15;
+    private static final int WINDOW_SECONDS = 60;
 
-    public RateLimitService(RedisTemplate<String,String> redisTemplate){
-        this.redisTemplate= redisTemplate;
+    public RateLimitService(RateLimitStrategy strategy) {
+        this.strategy = strategy;
     }
 
-    private String getCurrentMinute() {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
-    }
-    
-    private String getKey(String userIp){
-        String key = "rate:" + userIp + ":" + getCurrentMinute();
-        return key;
-    }
-    
-
-    
-
-    public String currStatus(String userIp){
-        String key = getKey(userIp);
-
-        String count = redisTemplate.opsForValue().get(key);
-        Long ttl = redisTemplate.getExpire(key, TimeUnit.SECONDS);
-
-        return "user: " + userIp + " | count: " + (count == null ? "0" : count) + " | TTL: " + ttl + "s";
-     
+    public boolean isAllowed(String userIp) {
+        return strategy.isAllowed(userIp, MAX_REQUESTS, WINDOW_SECONDS);
     }
 
+    public long getRemainingRequests(String userIp) {
+        return strategy.getRemainingRequests(userIp, MAX_REQUESTS, WINDOW_SECONDS);
+    }
+
+    public long getResetTime(String userIp) {
+        return strategy.getResetTime(userIp, WINDOW_SECONDS);
+    }
+
+    public String currStatus(String userIp) {
+        long remaining = getRemainingRequests(userIp);
+        long resetTime = getResetTime(userIp);
+        
+        return "user: " + userIp + 
+               " | remaining: " + remaining + 
+               " | reset in: " + resetTime + "s";
+    }
 }
