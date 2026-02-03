@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 public class HealthService {
 
     public String status(){
-        return "OK\n";
+        return "controller is not okay";
     }
 
 }

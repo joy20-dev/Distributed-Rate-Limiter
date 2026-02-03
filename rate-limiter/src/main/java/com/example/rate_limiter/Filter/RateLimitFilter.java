@@ -25,17 +25,32 @@ public class RateLimitFilter extends OncePerRequestFilter {
         this.rateLimitService = rateLimitService;
     }
 
+    private String getClientIp(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null || ip.isEmpty()) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
+    }
+    
+    
+
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) 
     throws ServletException, IOException{
 
-        String ip= request.getRemoteAddr();
-        if(!rateLimitService.isAllowed()){
+        
+
+        String ip= getClientIp(request);
+        if(!rateLimitService.isAllowed(ip)){
             response.setStatus(429);
             response.getWriter().write("too many requests");
             return;
         }
+        
+        
 
         filterChain.doFilter(request,response);
 
