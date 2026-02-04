@@ -6,7 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 @Component
 public class FixedWindowStrategy implements RateLimitStrategy {
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate; // stored as plain strings
 
     public FixedWindowStrategy(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;

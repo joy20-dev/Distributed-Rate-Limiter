@@ -1,6 +1,8 @@
 package com.example.rate_limiter.Service;
 
 import com.example.rate_limiter.strategy.RateLimitStrategy;
+import com.example.rate_limiter.strategy.SlidingWindowStrategy;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -9,7 +11,7 @@ public class RateLimitService {
     private static final int MAX_REQUESTS = 15;
     private static final int WINDOW_SECONDS = 60;
 
-    public RateLimitService(RateLimitStrategy strategy) {
+    public RateLimitService(SlidingWindowStrategy strategy) {
         this.strategy = strategy;
     }
 
