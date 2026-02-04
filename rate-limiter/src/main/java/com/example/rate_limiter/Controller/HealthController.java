@@ -2,13 +2,14 @@ package com.example.rate_limiter.Controller;
 
 import org.springframework.web.bind.annotation.*;
 
+import com.example.rate_limiter.Annotations.RateLimit;
 import com.example.rate_limiter.Service.HealthService;
 import com.example.rate_limiter.Service.RateLimitService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-
+@RequestMapping("/api/v1")
 public class HealthController {
 
     private final HealthService healthService;
@@ -40,9 +41,17 @@ public class HealthController {
         return rateLimitService.currStatus(ip);
     }
 
-    @GetMapping("/test")
-    public String test(){
-        return "testing ";
+
+    @RateLimit(requests = 100, windowSeconds = 60, strategy = StrategyType.SLIDING_WINDOW)
+    @GetMapping("/premiumEndPoint")
+    public String premium(){
+        return "you are a premium user ";
+    }
+
+    @RateLimit(requests = 10, windowSeconds = 60, strategy = StrategyType.FIXED_WINDOW)
+    @GetMapping("/freeEndPoint")
+    public String free(){
+        return "you are a free user ";
     }
 
 

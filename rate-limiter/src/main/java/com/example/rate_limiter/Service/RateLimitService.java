@@ -1,38 +1,29 @@
 package com.example.rate_limiter.Service;
 
-import com.example.rate_limiter.strategy.RateLimitStrategy;
-import com.example.rate_limiter.strategy.SlidingWindowStrategy;
-
+import com.example.rate_limiter.strategy.FixedWindowStrategy;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RateLimitService {
-    private final RateLimitStrategy strategy;
-    private static final int MAX_REQUESTS = 15;
-    private static final int WINDOW_SECONDS = 60;
+    private final FixedWindowStrategy strategy;
+    
+    // Global limits - high to prevent DDoS, not per-endpoint limits
+    private static final int GLOBAL_MAX_REQUESTS = 100;  // 100 requests
+    private static final int GLOBAL_WINDOW_SECONDS = 60; // per minute
 
-    public RateLimitService(SlidingWindowStrategy strategy) {
+    public RateLimitService(FixedWindowStrategy strategy) {
         this.strategy = strategy;
     }
 
     public boolean isAllowed(String userIp) {
-        return strategy.isAllowed(userIp, MAX_REQUESTS, WINDOW_SECONDS);
+        return strategy.isAllowed(userIp, GLOBAL_MAX_REQUESTS, GLOBAL_WINDOW_SECONDS);
     }
 
     public long getRemainingRequests(String userIp) {
-        return strategy.getRemainingRequests(userIp, MAX_REQUESTS, WINDOW_SECONDS);
+        return strategy.getRemainingRequests(userIp, GLOBAL_MAX_REQUESTS, GLOBAL_WINDOW_SECONDS);
     }
 
     public long getResetTime(String userIp) {
-        return strategy.getResetTime(userIp, WINDOW_SECONDS);
-    }
-
-    public String currStatus(String userIp) {
-        long remaining = getRemainingRequests(userIp);
-        long resetTime = getResetTime(userIp);
-        
-        return "user: " + userIp + 
-               " | remaining: " + remaining + 
-               " | reset in: " + resetTime + "s";
+        return strategy.getResetTime(userIp, GLOBAL_WINDOW_SECONDS);
     }
 }
