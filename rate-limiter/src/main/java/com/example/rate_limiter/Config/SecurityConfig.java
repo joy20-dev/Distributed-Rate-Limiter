@@ -12,24 +12,26 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/**").permitAll()
-                .anyRequest().authenticated()
-            )
-            .httpBasic(Customizer.withDefaults());
-
-        return http.build();
-    }
     // @Bean
     // public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     //     http
     //         .csrf(csrf -> csrf.disable())
-    //         .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+    //         .authorizeHttpRequests(auth -> auth
+    //             .requestMatchers("/api/**").permitAll()
+    //             .anyRequest().authenticated()
+    //         )
+    //         .httpBasic(Customizer.withDefaults());
 
     //     return http.build();
     // }
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(auth -> auth
+                .anyRequest().permitAll()  // Allow all requests
+            )
+            .csrf(csrf -> csrf.disable());  // Disable CSRF for testing
+        
+        return http.build();
+    }
 }

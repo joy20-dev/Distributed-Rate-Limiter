@@ -34,25 +34,10 @@ public class HealthController {
         return healthService.status();
     }
 
-    @GetMapping("/status")
-    public String status(HttpServletRequest request) {
-        // return "in status";
-        String ip = getClientIp(request);
-        return rateLimitService.currStatus(ip);
-    }
+    
 
 
-    @RateLimit(requests = 100, windowSeconds = 60, strategy = StrategyType.SLIDING_WINDOW)
-    @GetMapping("/premiumEndPoint")
-    public String premium(){
-        return "you are a premium user ";
-    }
-
-    @RateLimit(requests = 10, windowSeconds = 60, strategy = StrategyType.FIXED_WINDOW)
-    @GetMapping("/freeEndPoint")
-    public String free(){
-        return "you are a free user ";
-    }
+    
 
 
 }

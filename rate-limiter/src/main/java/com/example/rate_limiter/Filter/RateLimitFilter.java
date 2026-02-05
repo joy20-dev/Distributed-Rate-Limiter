@@ -28,7 +28,11 @@ public class RateLimitFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
+        System.out.println("request is in filter");
+
         String clientIp = httpRequest.getRemoteAddr();
+        
+        
 
         // Global rate limit check
         if (!rateLimitService.isAllowed(clientIp)) {
