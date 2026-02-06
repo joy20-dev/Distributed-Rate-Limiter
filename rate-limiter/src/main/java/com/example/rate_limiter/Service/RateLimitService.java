@@ -8,7 +8,7 @@ public class RateLimitService {
     private final FixedWindowStrategy strategy;
     
     // Global limits - high to prevent DDoS, not per-endpoint limits
-    private static final int GLOBAL_MAX_REQUESTS = 60;  // 60 global requests
+    private static final int GLOBAL_MAX_REQUESTS = 100;  // 60 global requests
     private static final int GLOBAL_WINDOW_SECONDS = 60; // per minute
 
     public RateLimitService(FixedWindowStrategy strategy) {

@@ -1,5 +1,6 @@
 package com.example.rate_limiter.Service;
 
+import com.example.rate_limiter.Config.RedisConfig;
 import com.example.rate_limiter.dto.RateLimitConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Service;
 public class RateLimitConfigService {
 
     private final String key_prefix ="config:endpoint:";
+    private final RedisTemplate<String, String> redisTemplate;
+    private final ObjectMapper mapper;
+
 
     public RateLimitConfigService(RedisTemplate<String, String> redisTemplate, ObjectMapper mapper) {
         this.redisTemplate = redisTemplate;

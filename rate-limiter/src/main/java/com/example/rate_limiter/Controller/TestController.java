@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     
     @RateLimit(requests = 5, windowSeconds = 120, strategy = StrategyType.FIXED_WINDOW)
-    @GetMapping("/free")
+    @GetMapping("/fixed")
     public String freeEndpoint() {
         return "Free tier - 5 requests per minute (Fixed Window)";
     }
     
     @RateLimit(requests = 20, windowSeconds = 60, strategy = StrategyType.SLIDING_WINDOW)
-    @GetMapping("/premium")
+    @GetMapping("/sliding")
     public String premiumEndpoint() {
         return "Premium tier - 20 requests per minute (Sliding Window)";
     }
