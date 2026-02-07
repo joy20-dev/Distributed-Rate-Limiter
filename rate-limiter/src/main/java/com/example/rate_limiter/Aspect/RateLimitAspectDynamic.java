@@ -37,7 +37,7 @@ public class RateLimitAspectDynamic {
         this.configService = configService;
     }
 
-    @Around("@annotation(com.example.rate_limiter.Annotations.RateLimitDynamic)")
+    @Around("@annotation(com.example.rate_limiter.Annotations.RateLimiterDynamic)")
     public Object rateLimit(ProceedingJoinPoint joinPoint) throws Throwable {
 
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
@@ -48,6 +48,8 @@ public class RateLimitAspectDynamic {
         HttpServletRequest request = attrs.getRequest();
 
         String endpoint = request.getRequestURI();
+        System.out.print(endpoint);
+
         String identifier = request.getRemoteAddr();
 
         //  Get config from Redis
@@ -83,7 +85,7 @@ public class RateLimitAspectDynamic {
         }
 
         if (!allowed) {
-            throw new RateLimitExceededException("Rate limit exceeded, try again in"+ String.valueOf(resetTime) +"s" );
+            throw new RateLimitExceededException("Rate limit exceeded, try again in -"+ String.valueOf(resetTime) +"s" );
         }
 
         // Allow request to proceed

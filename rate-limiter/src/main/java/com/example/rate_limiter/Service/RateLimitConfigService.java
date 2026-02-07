@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class RateLimitConfigService {
 
-    private final String key_prefix ="config:endpoint:";
+    private final String key_set_prefix ="config:endpoint:/api/";
+    private final String key_get_prefix ="config:endpoint:";
     private final RedisTemplate<String, String> redisTemplate;
     private final ObjectMapper mapper;
 
@@ -21,8 +22,28 @@ public class RateLimitConfigService {
         this.mapper = mapper;
     }
 
+    public RateLimitConfig viewConfig(String endpoint){
+        String key = key_set_prefix+endpoint;
+        String json = redisTemplate.opsForValue().get(key);
+
+        if(json !=null){
+            try 
+            {RateLimitConfig config = mapper.readValue(json,RateLimitConfig.class);
+            return config;
+            }
+            catch(JsonProcessingException e){
+                throw new IllegalStateException("Invalid config",e);
+            }
+
+        }
+        else{
+            return null;
+
+        }
+    }
+
     public RateLimitConfig getConfig(String endpoint){
-        String key = key_prefix+endpoint;
+        String key = key_get_prefix+endpoint;
         String json = redisTemplate.opsForValue().get(key);
 
         if(json !=null){
@@ -42,7 +63,7 @@ public class RateLimitConfigService {
     }
 
     public void setConfig(String endpoint, RateLimitConfig config){
-        String key = key_prefix+endpoint;
+        String key = key_set_prefix+endpoint;
         try
         {String json = mapper.writeValueAsString(config);
         redisTemplate.opsForValue().set(key,json);

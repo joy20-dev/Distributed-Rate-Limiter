@@ -29,7 +29,7 @@ public class AdminController {
     @GetMapping("/config/{endpoint}")
     public ResponseEntity<?> getConfig(@PathVariable String endpoint){
         try 
-        {RateLimitConfig config = configService.getConfig(endpoint);
+        {RateLimitConfig config = configService.viewConfig(endpoint);
             if(config==null){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message","config not found"));
 
