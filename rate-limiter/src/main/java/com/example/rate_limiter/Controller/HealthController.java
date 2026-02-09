@@ -2,13 +2,14 @@ package com.example.rate_limiter.Controller;
 
 import org.springframework.web.bind.annotation.*;
 
+import com.example.rate_limiter.Annotations.RateLimit;
 import com.example.rate_limiter.Service.HealthService;
 import com.example.rate_limiter.Service.RateLimitService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-
+@RequestMapping("/api/v1")
 public class HealthController {
 
     private final HealthService healthService;
@@ -33,17 +34,10 @@ public class HealthController {
         return healthService.status();
     }
 
-    @GetMapping("/status")
-    public String status(HttpServletRequest request) {
-        // return "in status";
-        String ip = getClientIp(request);
-        return rateLimitService.currStatus(ip);
-    }
+    
 
-    @GetMapping("/test")
-    public String test(){
-        return "testing ";
-    }
+
+    
 
 
 }

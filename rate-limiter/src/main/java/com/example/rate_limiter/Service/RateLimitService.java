@@ -1,51 +1,30 @@
 package com.example.rate_limiter.Service;
 
-
-import java.sql.Time;
-import java.util.concurrent.TimeUnit;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import com.example.rate_limiter.strategy.FixedWindowStrategy;
 import org.springframework.stereotype.Service;
-
-import org.springframework.data.redis.core.RedisTemplate;
 
 @Service
 public class RateLimitService {
-    private final RedisTemplate<String,String> redisTemplate;
-
-    public RateLimitService(RedisTemplate<String,String> redisTemplate){
-        this.redisTemplate= redisTemplate;
-    }
-
-    private String getCurrentMinute() {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
-    }
+    private final FixedWindowStrategy strategy;
     
-    private String getKey(String userIp){
-        String key = "rate:" + userIp + ":" + getCurrentMinute();
-        return key;
+    // Global limits - high to prevent DDoS, not per-endpoint limits
+    private static final int GLOBAL_MAX_REQUESTS = 100;  // 60 global requests
+    private static final int GLOBAL_WINDOW_SECONDS = 60; // per minute
+
+    public RateLimitService(FixedWindowStrategy strategy) {
+        this.strategy = strategy;
     }
-    
 
     public boolean isAllowed(String userIp) {
-        String key = getKey(userIp);
-        Long count = redisTemplate.opsForValue().increment(key);
-
-        if (count == 1) {
-            redisTemplate.expire(key, 1, TimeUnit.MINUTES);
-        }
-
-        return count <= 15;
+        String identifier = "global"+ userIp; // pass a different key for global request, else aspect rate limiter will update the same key as global
+        return strategy.isAllowed(identifier, GLOBAL_MAX_REQUESTS, GLOBAL_WINDOW_SECONDS);
     }
 
-    public String currStatus(String userIp){
-        String key = getKey(userIp);
-
-        String count = redisTemplate.opsForValue().get(key);
-        Long ttl = redisTemplate.getExpire(key, TimeUnit.SECONDS);
-
-        return "user: " + userIp + " | count: " + (count == null ? "0" : count) + " | TTL: " + ttl + "s";
-     
+    public long getRemainingRequests(String userIp) {
+        return strategy.getRemainingRequests(userIp, GLOBAL_MAX_REQUESTS, GLOBAL_WINDOW_SECONDS);
     }
 
+    public long getResetTime(String userIp) {
+        return strategy.getResetTime(userIp, GLOBAL_WINDOW_SECONDS);
+    }
 }
