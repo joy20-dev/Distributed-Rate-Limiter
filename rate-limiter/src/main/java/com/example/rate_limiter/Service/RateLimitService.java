@@ -8,7 +8,7 @@ public class RateLimitService {
     private final FixedWindowStrategy strategy;
     
     // Global limits - high to prevent DDoS, not per-endpoint limits
-    private static final int GLOBAL_MAX_REQUESTS = 100;  // 60 global requests
+    private static final int GLOBAL_MAX_REQUESTS = 100 ;  // 60 global requests
     private static final int GLOBAL_WINDOW_SECONDS = 60; // per minute
 
     public RateLimitService(FixedWindowStrategy strategy) {
@@ -21,10 +21,12 @@ public class RateLimitService {
     }
 
     public long getRemainingRequests(String userIp) {
-        return strategy.getRemainingRequests(userIp, GLOBAL_MAX_REQUESTS, GLOBAL_WINDOW_SECONDS);
+        String identifier = "global"+ userIp;
+        return strategy.getRemainingRequests(identifier, GLOBAL_MAX_REQUESTS, GLOBAL_WINDOW_SECONDS);
     }
 
     public long getResetTime(String userIp) {
-        return strategy.getResetTime(userIp, GLOBAL_WINDOW_SECONDS);
+        String identifier = "global"+ userIp;
+        return strategy.getResetTime(identifier, GLOBAL_WINDOW_SECONDS);
     }
 }
