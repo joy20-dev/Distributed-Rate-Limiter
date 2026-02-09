@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class DynamicRateLimiterController {
+    
 
     @RateLimiterDynamic(requests = 5, windowSeconds = 120, strategy = StrategyType.FIXED_WINDOW)
     @GetMapping("/free")

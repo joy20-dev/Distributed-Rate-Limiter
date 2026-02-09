@@ -8,6 +8,7 @@ services:
     depends_on:
       - redis
     environment:
+      SPRING_PROFILES_ACTIVE: dev
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
 
