@@ -287,7 +287,7 @@
                     addResult(`Request ${i}/${count}: Success (${response.status}) - Remaining: ${headers.remaining}/${headers.limit}, Reset: ${headers.reset}s`, 'success');
                 } else {
                     const error = await response.text();
-                    addResult(`Request ${i}/${count}: Woah slow down there,rate limit exceeded - Reset in ${headers.reset}s`, 'error');
+                    addResult(`Request ${i}/${count}: Woah slow down there!! Rate limit exceeded - Reset in ${headers.reset}s`, 'error');
                 }
                 
                 // Small delay between requests
