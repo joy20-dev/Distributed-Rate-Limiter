@@ -7,12 +7,50 @@
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Remove default styling */
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+        
+        /* Custom select colors */
+        select {
+            color: #1f2937;
+        }
+        
+        /* Remove blue highlight on focus */
+        select:focus {
+            outline: none;
+        }
+        
+        /* Custom dropdown arrow */
+        select {
+            background: white url('data:image/svg+xml;utf8,<svg fill="gray" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat;
+            background-position: right 10px center;
+            padding-right: 40px;
+        }
+        
+        /* Option styling */
+        select option {
+            background-color: white;
+            color: #1f2937;
+        }
+        
+        /* Selected option */
+        select option:checked {
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
     
     <!-- Header -->
     <header class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             
             <!-- Left: Logo + Title -->
             <div class="flex items-center gap-3">
@@ -20,39 +58,33 @@
                     <span class="text-white text-2xl font-bold">R</span>
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold text-gray-900">Rate Limiter Dashboard</h1>
-                   
+                    <h1 class="text-xl font-bold text-gray-900">Rate Limiter</h1>
+                    <p class="text-sm text-gray-500">admin dashboard</p>
                 </div>
             </div>
             
             <!-- Right: Admin + Live indicator -->
             <div class="flex items-center gap-4">
-                
                 <div class="flex items-center gap-2">
-                    
-                    <!-- Right: Admin + Live indicator -->
-                    <div class="flex items-center gap-4">
-                        <div class="flex items-center gap-2">
-                            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                            <span class="text-sm text-gray-600">live</span>
-                        </div>
-                        
-                        <!-- Simple Role Selector -->
-                        <select id="roleSelector" class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white">
-                            <option value="admin">👑 Admin</option>
-                            <option value="user">👤 User</option>
-                        </select>
-                    </div>
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="text-sm text-gray-600">live</span>
                 </div>
+                
+                <!-- Simple Role Selector -->
+                <select id="roleSelector" class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white">
+                    <option value="admin">👑 Admin</option>
+                    <option value="user">👤 User</option>
+                </select>
             </div>
             
         </div>
     </header>
+
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-6 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         
         <!-- Top Row: Configuration + Results -->
-        <div id="topRow" class="grid grid-cols-2 gap-6 mb-6">
+        <div id="topRow" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             
             <!-- Left: Configuration Section -->
             <div id="configSection" class="bg-white rounded-xl shadow-sm p-6">
@@ -71,30 +103,30 @@
                 </div>
                 
                 <!-- Form Grid -->
-                <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <!-- Endpoint Dropdown -->
-                    <div class="col-span-2">
+                    <div class="col-span-1 sm:col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-2">ENDPOINT</label>
                         <select id="endpoint" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
-                            <option value="free">free</option>
-                            <option value="premium">premium</option>
+                            <option value="free">/api/free</option>
+                            <option value="premium">/api/premium</option>
                         </select>
                     </div>
                     
                     <!-- Max Requests -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">MAX REQUESTS</label>
-                        <input type="number" id="maxRequests" value="100" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                        <input type="number" id="maxRequests" value="" placeholder="e.g., 100" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
                     </div>
                     
                     <!-- Window Seconds -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">WINDOW (SEC)</label>
-                        <input type="number" id="windowSeconds" value="60" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                        <input type="number" id="windowSeconds" value="" placeholder="e.g., 60" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
                     </div>
                     
                     <!-- Strategy -->
-                    <div class="col-span-2">
+                    <div class="col-span-1 sm:col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-2">STRATEGY</label>
                         <select id="strategy" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
                             <option value="SLIDING_WINDOW">sliding_window</option>
@@ -112,7 +144,6 @@
                 </button>
             </div>
             
-            
             <!-- Right: Results Section -->
             <div class="bg-white rounded-xl shadow-sm p-6">
                 <h3 class="text-lg font-bold text-gray-900 mb-4">Results</h3>
@@ -126,7 +157,7 @@
         </div>
         
         <!-- Bottom Row: Testing Section -->
-        <div class="grid grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Free Tier Card -->
             <div class="bg-white rounded-xl shadow-sm p-6">
                 <h3 class="text-lg font-bold text-gray-900 mb-1">Free Tier</h3>
@@ -140,7 +171,7 @@
                         Single
                     </button>
                     
-                    <input type="number" id="freeBurstCount" value="10" class="w-20 px-3 py-3 border border-gray-300 rounded-lg text-center">
+                    <input type="number" id="freeBurstCount" value="" placeholder="10" class="w-20 px-3 py-3 border border-gray-300 rounded-lg text-center">
                     
                     <button id="freeBurstBtn" class="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 font-medium">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,7 +195,7 @@
                         Single
                     </button>
                     
-                    <input type="number" id="premiumBurstCount" value="10" class="w-20 px-3 py-3 border border-gray-300 rounded-lg text-center">
+                    <input type="number" id="premiumBurstCount" value="" placeholder="10" class="w-20 px-3 py-3 border border-gray-300 rounded-lg text-center">
                     
                     <button id="premiumBurstBtn" class="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 font-medium">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -177,155 +208,178 @@
         </div>
         
     </main>
-<script>
-    // Role switching
-    const roleSelector = document.getElementById('roleSelector');
-    const configSection = document.getElementById('configSection');
-    
-    roleSelector.addEventListener('change', function() {
-        if (this.value === 'admin') {
-            configSection.style.display = 'block';
-            topRow.classList.remove('grid-cols-1');
-            topRow.classList.add('grid-cols-2');
-        } else {
-            configSection.style.display = 'none';
-            topRow.classList.remove('grid-cols-2'); // results consume full width
-            topRow.classList.add('grid-cols-1');
-        }
-    });
 
-    // clear imputs on load
-    window.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('maxRequests').value = '';
-        document.getElementById('windowSeconds').value = '';
-        document.getElementById('freeBurstCount').value = '';
-        document.getElementById('premiumBurstCount').value = '';
-    });
-    
-    // Configuration - Fetch
-    document.getElementById('fetchBtn').addEventListener('click', async function() {
-        const endpoint = document.getElementById('endpoint').value;
-        
-        try {
-            const response = await fetch(`/api/admin/config/${endpoint}`);
-            const data = await response.json();
-            
-            if (response.ok) {
-                document.getElementById('maxRequests').value = data.requests;
-                document.getElementById('windowSeconds').value = data.windowSeconds;
-                document.getElementById('strategy').value = data.strategy;
-                
-                addResult('Config fetched successfully', 'success');
-            } else {
-                addResult('Config not found - using defaults', 'warning');
-            }
-        } catch (error) {
-            addResult('Error fetching config: ' + error.message, 'error');
-        }
-    });
-    
-    // Configuration - Push
-    document.getElementById('pushBtn').addEventListener('click', async function() {
-        const endpoint = document.getElementById('endpoint').value;
-        const config = {
-            requests: parseInt(document.getElementById('maxRequests').value),
-            windowSeconds: parseInt(document.getElementById('windowSeconds').value),
-            strategy: document.getElementById('strategy').value
-        };
-        
-        try {
-            const response = await fetch(`/api/admin/config/${endpoint}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(config)
-            });
-            
-            const data = await response.json();
-            
-            if (response.ok) {
-                addResult(`Config updated for ${endpoint}`, 'success');
+    <script>
+        // Clear input values on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('maxRequests').value = '';
+            document.getElementById('windowSeconds').value = '';
+            document.getElementById('freeBurstCount').value = '';
+            document.getElementById('premiumBurstCount').value = '';
+        });
 
-                document.getElementById('maxRequests').value = '';
-                document.getElementById('windowSeconds').value = '';
-            } else {
-                addResult('Failed to update config', 'error');
-            }
-        } catch (error) {
-            addResult('Error: ' + error.message, 'error');
-        }
-    });
-    
-    // Testing - Single Request
-    document.getElementById('freeSingleBtn').addEventListener('click', () => testEndpoint('/api/free', 1));
-    document.getElementById('premiumSingleBtn').addEventListener('click', () => testEndpoint('/api/premium', 1));
-    
-    // Testing - Burst Request
-    document.getElementById('freeBurstBtn').addEventListener('click', () => {
-        const count = parseInt(document.getElementById('freeBurstCount').value);
-        testEndpoint('/api/free', count);
-    });
-    
-    document.getElementById('premiumBurstBtn').addEventListener('click', () => {
-        const count = parseInt(document.getElementById('premiumBurstCount').value);
-        testEndpoint('/api/premium', count);
-    });
-    
-    // Test endpoint function
-    async function testEndpoint(endpoint, count) {
-        addResult(`Testing ${endpoint} (${count} request${count > 1 ? 's' : ''})...`, 'info');
+        // Role switching
+        const roleSelector = document.getElementById('roleSelector');
+        const configSection = document.getElementById('configSection');
+        const topRow = document.getElementById('topRow');
         
-        for (let i = 1; i <= count; i++) {
+        roleSelector.addEventListener('change', function() {
+            if (this.value === 'admin') {
+                configSection.style.display = 'block';
+                topRow.classList.remove('lg:grid-cols-1');
+                topRow.classList.add('lg:grid-cols-2');
+            } else {
+                configSection.style.display = 'none';
+                topRow.classList.remove('lg:grid-cols-2');
+                topRow.classList.add('lg:grid-cols-1');
+            }
+        });
+        
+        // Configuration - Fetch
+        document.getElementById('fetchBtn').addEventListener('click', async function() {
+            const endpoint = document.getElementById('endpoint').value;
+            
             try {
-                const response = await fetch(endpoint);
-                const headers = {
-                    limit: response.headers.get('X-RateLimit-Limit'),
-                    remaining: response.headers.get('X-RateLimit-Remaining'),
-                    reset: response.headers.get('X-RateLimit-Reset')
-                };
+                const response = await fetch(`/api/admin/config/${endpoint}`);
+                const data = await response.json();
                 
                 if (response.ok) {
-                    addResult(`Request ${i}/${count}: Success (${response.status}) - Remaining: ${headers.remaining}/${headers.limit}, Reset: ${headers.reset}s`, 'success');
+                    document.getElementById('maxRequests').value = data.requests;
+                    document.getElementById('windowSeconds').value = data.windowSeconds;
+                    document.getElementById('strategy').value = data.strategy;
+                    
+                    addResult('Config fetched successfully', 'success');
                 } else {
-                    const error = await response.text();
-                    addResult(`Request ${i}/${count}: Woah slow down there!! Rate limit exceeded - Reset in ${headers.reset}s`, 'error');
+                    
+                    addResult('Config not found - using defaults ', 'warning');
                 }
-                
-                // Small delay between requests
-                if (i < count) await new Promise(r => setTimeout(r, 100));
-                
             } catch (error) {
-                addResult(`Request ${i}/${count}: Error - ${error.message}`, 'error');
+                addResult('Error fetching config: ' + error.message, 'error');
+            }
+        });
+        
+        // Configuration - Push
+        document.getElementById('pushBtn').addEventListener('click', async function() {
+            const endpoint = document.getElementById('endpoint').value;
+            const config = {
+                requests: parseInt(document.getElementById('maxRequests').value),
+                windowSeconds: parseInt(document.getElementById('windowSeconds').value),
+                strategy: document.getElementById('strategy').value
+            };
+            
+            try {
+                const response = await fetch(`/api/admin/config/${endpoint}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(config)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult(`Config updated for ${endpoint}`, 'success');
+                    
+                    // Clear inputs after successful push
+                    document.getElementById('maxRequests').value = '';
+                    document.getElementById('windowSeconds').value = '';
+                } else {
+                    addResult('Failed to update config', 'error');
+                }
+            } catch (error) {
+                addResult('Error: ' + error.message, 'error');
+            }
+        });
+        
+        // Testing - Single Request
+        document.getElementById('freeSingleBtn').addEventListener('click', () => testEndpoint('/api/free', 1));
+        document.getElementById('premiumSingleBtn').addEventListener('click', () => testEndpoint('/api/premium', 1));
+        
+        // Testing - Burst Request
+        document.getElementById('freeBurstBtn').addEventListener('click', () => {
+            const count = parseInt(document.getElementById('freeBurstCount').value) || 10;
+            testEndpoint('/api/free', count);
+        });
+        
+        document.getElementById('premiumBurstBtn').addEventListener('click', () => {
+            const count = parseInt(document.getElementById('premiumBurstCount').value) || 10;
+            testEndpoint('/api/premium', count);
+        });
+        
+        // Test endpoint function
+        async function testEndpoint(endpoint, count) {
+            addResult(`Testing ${endpoint} (${count} request${count > 1 ? 's' : ''})...`, 'info');
+            
+            for (let i = 1; i <= count; i++) {
+                try {
+                    const response = await fetch(endpoint);
+                    
+                    // Check if blocked by global filter
+                    if (response.status === 429) {
+                        const errorData = await response.json();
+                        
+                        // Check if it's global filter or endpoint rate limit
+                        if (errorData.error === "Global rate limit exceeded") {
+                            addResult(`GLOBAL LIMIT: ${errorData.message} - Retry in ${errorData.retryAfter}`, 'error');
+                            break; // Stop testing if globally blocked
+                        } else {
+                            // Endpoint-specific rate limit
+                            const headers = {
+                                limit: response.headers.get('X-RateLimit-Limit'),
+                                remaining: response.headers.get('X-RateLimit-Remaining'),
+                                reset: response.headers.get('X-RateLimit-Reset')
+                            };
+                            addResult(`Request ${i}/${count}: Woah slow down!!!Rate Limite exceeded (${response.status}) - Reset in ${headers.reset}s`, 'error');
+                        }
+                        
+                    } else if (response.ok) {
+                        const headers = {
+                            limit: response.headers.get('X-RateLimit-Limit'),
+                            remaining: response.headers.get('X-RateLimit-Remaining'),
+                            reset: response.headers.get('X-RateLimit-Reset')
+                        };
+                        addResult(`Request ${i}/${count}: Success (${response.status}) - Remaining: ${headers.remaining}/${headers.limit}, Reset: ${headers.reset}s`, 'success');
+                    } else {
+                        addResult(`Request ${i}/${count}: Error ${response.status}`, 'warning');
+                    }
+                    
+                    // Small delay between requests
+                    if (i < count) await new Promise(r => setTimeout(r, 100));
+                    
+                } catch (error) {
+                    addResult(`❌ Request ${i}/${count}: Network Error - ${error.message}`, 'error');
+                    break;
+                }
             }
         }
-    }
-    
-    // Add result to display
-    function addResult(message, type) {
-        const container = document.getElementById('resultsContainer');
         
-        // Clear placeholder
-        if (container.children[0]?.textContent.includes('No requests yet')) {
-            container.innerHTML = '';
+        // Add result to display
+        function addResult(message, type) {
+            const container = document.getElementById('resultsContainer');
+            
+            // Clear placeholder
+            if (container.children[0]?.textContent.includes('No requests yet')) {
+                container.innerHTML = '';
+            }
+            
+            const colors = {
+                success: 'bg-green-50 text-green-700 border-green-200',
+                error: 'bg-red-50 text-red-700 border-red-200',
+                warning: 'bg-yellow-50 text-yellow-700 border-yellow-200',
+                info: 'bg-blue-50 text-blue-700 border-blue-200'
+            };
+            
+            const result = document.createElement('div');
+            result.className = `p-3 rounded-lg border text-sm ${colors[type]}`;
+            result.textContent = message;
+            
+            container.insertBefore(result, container.firstChild);
+            
+            // Keep only last 20 results
+            while (container.children.length > 20) {
+                container.removeChild(container.lastChild);
+            }
         }
-        
-        const colors = {
-            success: 'bg-green-50 text-green-700 border-green-200',
-            error: 'bg-red-50 text-red-700 border-red-200',
-            warning: 'bg-yellow-50 text-yellow-700 border-yellow-200',
-            info: 'bg-blue-50 text-blue-700 border-blue-200'
-        };
-        
-        const result = document.createElement('div');
-        result.className = `p-3 rounded-lg border text-sm ${colors[type]}`;
-        result.textContent = message;
-        
-        container.insertBefore(result, container.firstChild);
-        
-        // Keep only last 20 results
-        while (container.children.length > 20) {
-            container.removeChild(container.lastChild);
-        }
-    }
-</script>
+    </script>
+
 </body>
 </html>
